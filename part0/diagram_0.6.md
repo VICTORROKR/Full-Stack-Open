@@ -4,7 +4,7 @@ sequenceDiagram
 
     Navegador->>Servidor: GET https://studies.cs.helsinki.fi/exampleapp/spa
     activate Servidor
-    Servidor-->>Navegador: Documento HTML
+    Servidor-->>Navegador: Documento HTML (200 OK)
     deactivate Servidor
 
     Navegador->>Servidor: GET https://studies.cs.helsinki.fi/exampleapp/main.css
@@ -17,11 +17,16 @@ sequenceDiagram
     Servidor-->>Navegador: Archivo JavaScript (spa.js)
     deactivate Servidor
 
-    Note right of Navegador: El navegador ejecuta el código JavaScript que solicita los datos JSON
+    Note right of Navegador: El navegador ejecuta el código JavaScript<br/>que solicita los datos JSON al servidor
 
     Navegador->>Servidor: GET https://studies.cs.helsinki.fi/exampleapp/data.json
     activate Servidor
-    Servidor-->>Navegador: Datos JSON con las notas [{"content": "...", "date": "..."}, ...]
+    Servidor-->>Navegador: Datos de notas en formato JSON
     deactivate Servidor
 
-    Note right of Navegador: El navegador ejecuta la función callback que renderiza las notas en la página
+    Note right of Navegador: El usuario escribe una nueva nota y<br/>el navegador envía los datos asíncronamente
+
+    Navegador->>Servidor: POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa
+    activate Servidor
+    Servidor-->>Navegador: 201 Created (JSON: {"message":"note created"})
+    deactivate Servidor
