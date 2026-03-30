@@ -14,25 +14,37 @@ const App = () => {
 
   const [selected, setSelected] = useState(0)
 
-  // Función para manejar el clic y generar una anécdota aleatoria
-  const handleNextAnecdote = () => {
-    // Math.random() genera un decimal entre 0 (inclusivo) y 1 (exclusivo).
-    // Al multiplicarlo por la longitud del arreglo y usar Math.floor(),
-    // obtenemos un número entero entre 0 y anecdotes.length - 1.
-    const randomIndex = Math.floor(Math.random() * anecdotes.length)
+  // Inicializa un array con la misma longitud que 'anecdotes' y lo llena de ceros: [0, 0, 0, 0, 0, 0, 0, 0]
+  const [votes, setVotes] = useState(new Array(anecdotes.length).fill(0))
 
-    // Actualizamos el estado con el nuevo índice aleatorio
+  const handleNextAnecdote = () => {
+    const randomIndex = Math.floor(Math.random() * anecdotes.length)
     setSelected(randomIndex)
+  }
+
+  const handleVote = () => {
+    // 1. Hacemos una copia superficial (shallow copy) del array de votos actual
+    const newVotes = [...votes]
+
+    // 2. Incrementamos en 1 el valor en la posición de la anécdota seleccionada
+    newVotes[selected] += 1
+
+    // 3. Pasamos el nuevo array a la función que actualiza el estado
+    setVotes(newVotes)
   }
 
   return (
     <div>
-      {/* Es una buena práctica envolver el texto en una etiqueta como <p> */}
       <p>{anecdotes[selected]}</p>
 
-      <button onClick={handleNextAnecdote}>
-        next anecdote
-      </button>
+      {/* Mostramos los votos correspondientes al índice actual */}
+      <p>has {votes[selected]} votes</p>
+
+      {/* Botón para votar */}
+      <button onClick={handleVote}>vote</button>
+
+      {/* Botón para cambiar de anécdota */}
+      <button onClick={handleNextAnecdote}>next anecdote</button>
     </div>
   )
 }
