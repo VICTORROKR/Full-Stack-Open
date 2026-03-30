@@ -1,11 +1,21 @@
 import { useState } from 'react'
 
-// 1. Definimos el nuevo componente fuera de App.
-// Usamos desestructuración ({ good, neutral, bad }) para extraer los props directamente.
 const Statistics = ({ good, neutral, bad }) => {
   const total = good + neutral + bad
-  const average = total === 0 ? 0 : (good - bad) / total
-  const positivePercentage = total === 0 ? 0 : (good / total) * 100
+
+  // Renderizado condicional: si el total es 0, retornamos anticipadamente el mensaje.
+  if (total === 0) {
+    return (
+      <div>
+        <h1>statistics</h1>
+        <p>No feedback given</p>
+      </div>
+    )
+  }
+
+  // Si el total es mayor que 0, el código continúa y renderiza las estadísticas reales.
+  const average = (good - bad) / total
+  const positivePercentage = (good / total) * 100
 
   return (
     <div>
@@ -21,7 +31,6 @@ const Statistics = ({ good, neutral, bad }) => {
 }
 
 const App = () => {
-  // El estado permanece en el componente raíz
   const [good, setGood] = useState(0)
   const [neutral, setNeutral] = useState(0)
   const [bad, setBad] = useState(0)
@@ -37,7 +46,6 @@ const App = () => {
       <button onClick={handleNeutralClick}>neutral</button>
       <button onClick={handleBadClick}>bad</button>
 
-      {/* 2. Usamos el componente Statistics y le pasamos el estado como props */}
       <Statistics good={good} neutral={neutral} bad={bad} />
     </div>
   )
