@@ -1,16 +1,17 @@
 import { useState } from 'react'
 
-// Nuevo componente para los botones
 const Button = ({ handleClick, text }) => (
   <button onClick={handleClick}>{text}</button>
 )
 
-// Nuevo componente para mostrar una sola línea de estadística
+// 1. Refactorizamos StatisticLine para devolver una fila de tabla (<tr>)
+// con dos celdas (<td>) en lugar de un párrafo (<p>).
 const StatisticLine = ({ text, value }) => {
   return (
-    <p>
-      {text} {value}
-    </p>
+    <tr>
+      <td>{text}</td>
+      <td>{value}</td>
+    </tr>
   )
 }
 
@@ -29,16 +30,20 @@ const Statistics = ({ good, neutral, bad }) => {
   const average = (good - bad) / total
   const positivePercentage = (good / total) * 100
 
-  // Usamos el componente StatisticLine para cada dato
+  // 2. Envolvemos los componentes StatisticLine dentro de un <table> y un <tbody>
   return (
     <div>
       <h1>statistics</h1>
-      <StatisticLine text="good" value={good} />
-      <StatisticLine text="neutral" value={neutral} />
-      <StatisticLine text="bad" value={bad} />
-      <StatisticLine text="all" value={total} />
-      <StatisticLine text="average" value={average} />
-      <StatisticLine text="positive" value={positivePercentage + " %"} />
+      <table>
+        <tbody>
+          <StatisticLine text="good" value={good} />
+          <StatisticLine text="neutral" value={neutral} />
+          <StatisticLine text="bad" value={bad} />
+          <StatisticLine text="all" value={total} />
+          <StatisticLine text="average" value={average} />
+          <StatisticLine text="positive" value={positivePercentage + " %"} />
+        </tbody>
+      </table>
     </div>
   )
 }
@@ -48,7 +53,6 @@ const App = () => {
   const [neutral, setNeutral] = useState(0)
   const [bad, setBad] = useState(0)
 
-  // Usamos el componente Button para cada acción
   return (
     <div>
       <h1>give feedback</h1>
