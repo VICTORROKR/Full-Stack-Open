@@ -13,8 +13,6 @@ const App = () => {
   ]
 
   const [selected, setSelected] = useState(0)
-
-  // Inicializa un array con la misma longitud que 'anecdotes' y lo llena de ceros: [0, 0, 0, 0, 0, 0, 0, 0]
   const [votes, setVotes] = useState(new Array(anecdotes.length).fill(0))
 
   const handleNextAnecdote = () => {
@@ -23,28 +21,37 @@ const App = () => {
   }
 
   const handleVote = () => {
-    // 1. Hacemos una copia superficial (shallow copy) del array de votos actual
     const newVotes = [...votes]
-
-    // 2. Incrementamos en 1 el valor en la posición de la anécdota seleccionada
     newVotes[selected] += 1
-
-    // 3. Pasamos el nuevo array a la función que actualiza el estado
     setVotes(newVotes)
   }
 
+  // 1. Encontrar el número máximo de votos en el array
+  const maxVotes = Math.max(...votes)
+
+  // 2. Encontrar el índice (posición) donde se encuentra ese número máximo
+  const mostVotedIndex = votes.indexOf(maxVotes)
+
   return (
     <div>
+      <h1>Anecdote of the day</h1>
       <p>{anecdotes[selected]}</p>
-
-      {/* Mostramos los votos correspondientes al índice actual */}
       <p>has {votes[selected]} votes</p>
-
-      {/* Botón para votar */}
       <button onClick={handleVote}>vote</button>
-
-      {/* Botón para cambiar de anécdota */}
       <button onClick={handleNextAnecdote}>next anecdote</button>
+
+      <h1>Anecdote with most votes</h1>
+      {/* Renderizado condicional simple: si el máximo de votos es 0,
+        aún no mostramos un ganador. Si es mayor a 0, mostramos la anécdota.
+      */}
+      {maxVotes === 0 ? (
+        <p>No votes yet.</p>
+      ) : (
+        <>
+          <p>{anecdotes[mostVotedIndex]}</p>
+          <p>has {maxVotes} votes</p>
+        </>
+      )}
     </div>
   )
 }
